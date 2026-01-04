@@ -42,3 +42,20 @@ test "uuid::v4_seeded different seeds" {
 	67890 uuid::v4_seeded -> id2
 	id1 id2 str::compare 0 != testing::assert_true
 }
+
+test "uuid format structure" {
+	42 uuid::v4_seeded -> id
+	// Check version nibble at position 14 is '4'
+	id 14 str::char_at! 52 testing::assert_eq  // '4' = ASCII 52
+	// Check dash positions (8, 13, 18, 23)
+	id 8 str::char_at! 45 testing::assert_eq   // '-' = ASCII 45
+	id 13 str::char_at! 45 testing::assert_eq
+	id 18 str::char_at! 45 testing::assert_eq
+	id 23 str::char_at! 45 testing::assert_eq
+}
+
+test "uuid length consistency" {
+	1 uuid::v4_seeded str::len 36 testing::assert_eq
+	2 uuid::v4_seeded str::len 36 testing::assert_eq
+	3 uuid::v4_seeded str::len 36 testing::assert_eq
+}
